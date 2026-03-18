@@ -1,12 +1,32 @@
+.model small
+.stack 64
 .data
-    ; Number 1: 12345678h (split into two 16-bit parts)
-    num1_low  dw 5678h
-    num1_high dw 1234h
-    
-    ; Number 2: 11112222h
-    num2_low  dw 2222h
-    num2_high dw 1111h
-    
-    ; Result storage
-    res_low   dw ?
-    res_high  dw ?
+
+num1 DD 4567BA37H
+num2 DD 34239BA3H
+sum  DD ?
+.code
+   main proc Far
+MOV AX,@DATA
+MOV DS,AX  
+MOV SI,OFFSET num1
+MOV DI,OFFSET num2
+MOV BX,OFFSET sum
+MOV AX,[SI] 
+MOV DX,[DI]
+ADD AX,DX
+MOV [BX],AX
+INC SI
+INC SI
+INC DI
+INC DI
+INC BX
+INC BX  
+MOV AX,[SI] 
+MOV DX,[DI]
+ADC AX,DX
+MOV [BX],AX
+MOV AH,4CH
+INT 21H
+main endp
+end main
