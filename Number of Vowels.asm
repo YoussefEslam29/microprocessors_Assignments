@@ -2,19 +2,21 @@
 .model small
 .stack 100h
 
+.model small
+.stack 100h
+
 .data
-    str db 'Arab Academy for Science and Technology$'
+    mystring db 'Arab Academy for Science and Technology$'
     vowels db 'aAeEiIoOuU'
-    vowel_count db 0
+    msg db 'Total vowels found: $'
 
 .code
 main proc
     mov ax, @data
     mov ds, ax
-    mov es, ax
 
-    lea si, str
-    mov bl, 0
+    lea si, mystring
+    xor bx, bx
 
 next_char:
     mov al, [si]
@@ -40,7 +42,27 @@ not_vowel:
     jmp next_char
 
 done:
-    mov vowel_count, bl
+    lea dx, msg
+    mov ah, 09h
+    int 21h
+
+    mov al, bl
+    xor ah, ah
+    
+    mov cl, 10
+    div cl
+    
+    mov bx, ax
+    
+    mov dl, bl
+    add dl, 30h
+    mov ah, 02h
+    int 21h
+    
+    mov dl, bh
+    add dl, 30h
+    mov ah, 02h
+    int 21h
 
     mov ah, 4ch
     int 21h
